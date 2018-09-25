@@ -192,10 +192,6 @@ void draw() {
   else {
     showMaze(maze);
     
-    fill(0,255,0);
-    noStroke();
-    rect(width-tileSize,height-tileSize,tileSize,tileSize);
-    
     if (wPressed && posY > size) {
       boolean foundWall = false;
       for (int xCheck = posX-(size/2); xCheck < (posX+(size/2)); xCheck+=1) {
@@ -265,6 +261,7 @@ void draw() {
     //fill(255,255,255,100);
     //arc(posX, posY, 100, 100, (radians(angle-60)), (radians(angle+60)));
     
+    //hidden.beginDraw();
     s = createShape();
     s.beginShape();
     s.noStroke();
@@ -292,6 +289,10 @@ void draw() {
     fill(0,0,255);
     stroke(255);
     ellipse(posX, posY, size, size);
+    
+    fill(0,255,0);
+    noStroke();
+    rect(width-tileSize,height-tileSize,tileSize,tileSize);
   }
 }
 
