@@ -191,6 +191,9 @@ void draw() {
   }
   else {
     showMaze(maze);
+    fill(0,255,0);
+    noStroke();
+    rect(width-tileSize,height-tileSize,tileSize,tileSize);
     
     if (wPressed && posY > size) {
       boolean foundWall = false;
