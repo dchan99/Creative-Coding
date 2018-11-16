@@ -1,0 +1,11 @@
+Jooble API Key:
+cb211bed-6e2e-4210-8fc1-53fe257aafa8
+https://us.jooble.org/api/3f394efd-76cf-4b5d-a00c-8316928c3f91
+
+Bing Location API Key:
+AgVPPeeBUEmXYkpWjqkR6oP4UDC7y10MzMAgTDGXx2QnFvoacDfwgWg94uYpmID4
+
+MapQuest API Key:
+key: hfoar9zB0Askf1kPrrzXQKbRKOipZAsA
+secret: ALnFglJfHki2LlzD
+http://www.mapquestapi.com/geocoding/v1/batch?key=KEY&location=Denver,CO&location=Boulder,CO
