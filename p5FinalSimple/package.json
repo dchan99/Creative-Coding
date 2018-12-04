@@ -1,0 +1,14 @@
+{
+  "name": "ddshoot",
+  "version": "1.0.0",
+  "description": "Dodge. Shoot. Pickup. Repeat.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Chan",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
