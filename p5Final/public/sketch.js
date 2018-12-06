@@ -1,29 +1,4 @@
-// var explode_sprite_sheet
-// var explode_sprite
-
-
-// function preload() {
-//   // Load the explode sprite sheet using frame width, height and number of frames
-//   explode_sprite_sheet = loadSpriteSheet('assets/explode_example.png', 171, 158, 11)
-
-//   // Exploding star animation
-//   explode_animation = loadAnimation(explode_sprite_sheet)
-// }
-
-// function setup() {
-//   createCanvas(1000, 1000)
-
-//   // Create the exploding star sprite and add it's animation
-//   explode_sprite = createSprite(width / 2, 100, 171, 158)
-//   explode_sprite.addAnimation('explode', explode_animation)
-// }
-
-// function draw() {
-//   clear()
-//   background(0)
-
-//   drawSprites()
-// }
+var sequenceBackground
 
 var spaceships
 var spaceshipImg
@@ -31,17 +6,39 @@ var spaceshipImg
 var bullets
 var bulletImg
 
+var minionImg
+var bossImg
+
 var ricochet
 var explosion
 
+var bulletPatterns = {}
+
+var enemiesDefeated
+
 function preload() {
+  // backgroundImg = loadImage('/assets/background-black.png')
+  sequenceBackground = loadAnimation('assets/bbackground (1).png','assets/bbackground (2).png',
+  'assets/bbackground (3).png','assets/bbackground (4).png',
+  'assets/bbackground (5).png','assets/bbackground (6).png',
+  'assets/bbackground (7).png','assets/bbackground (8).png')
+  sequenceBackground.frameDelay = 30
+
   spaceshipImg = loadImage('/assets/spacepixels-0.1.0/pixel_ship_blue.png')
   bulletImg = loadImage('/assets/spacepixels-0.1.0/pixel_laser_small_red.png')
+  
+  // minionImg = loadImage('/assets/spacepixels-0.1.0/')
+  bossImg = loadImage('/assets/spacepixels-0.1.0/pixel_station_red.png')
+
   ricochet = loadSound("assets/ricochet.wav")
   explosion = loadSound("assets/explosion.wav")
 }
+
 function setup() {
   createCanvas(1000, 1000)
+
+  // var backgroundSprite = createSprite(0,0,width,height);
+  // backgroundSprite.addAnimation('background',sequenceBackground);
 
   spaceships = new Group();
 
@@ -71,26 +68,21 @@ function setup() {
 }
 function draw() {
   background(0)
+
+  animation(sequenceBackground, 0, 0);  
   
   bullets.bounce(bullets,bounceCallback)
   bullets.collide(spaceship,death)
-  // setBounce()
-  // if (mouseIsPressed) {
-  //   if (spaceship.rotation == 360) {spaceship.rotation = 0}
-  //   spaceship.rotation += 2
-  //   console.log(spaceship.rotation)
-  // }
 
-  // for (var i = 0; i < allSprites.length; i++) {
-  //   if (allSprites[i].position.y > height || allSprites[i].position.y < 0) {
-  //     allSprites[i].velocity.y *= -1
-  //     allSprites[i].mirrorY(-allSprites[i].mirrorY())
-  //   }
-  //   if (allSprites[i].position.x > width || allSprites[i].position.x < 0) {
-  //     allSprites[i].velocity.x *= -1
-  //     allSprites[i].mirrorX(-allSprites[i].mirrorX())
-  //   }
-  // }
+  for (i in bulletPatterns) {
+    bulletPatterns[i].bounce(bullets,bounceCallback)
+    bulletPatterns[i].collide(spaceship,death)
+    if (i == 'spiral') {
+      bulletPatterns[i].forEach(bullet => {
+        bullet.setSpeed(5, bullet.rotation+1)
+      });
+    }
+  }
 
   var mappedX = map(mouseX, 0, width, 0, width, true)
   var mappedY = map(mouseY, 0, height, 0, height, true)
@@ -114,7 +106,6 @@ function draw() {
     spaceship.rotation = angle + 90
   }
   drawSprites()
-  // fill(255)
   ellipse(spaceship.position.x,spaceship.position.y,16,16)
 }
 
@@ -138,19 +129,65 @@ function death() {
 }
 
 function mousePressed() {
-  // bullet = createSprite(mouseX, mouseY)
-  bullet = createSprite(random(0,width), random(0,height))
-  // bullet = createSprite(700, 500)
-  bullet.addImage(bulletImg)
+  // // bullet = createSprite(mouseX, mouseY)
+  // bullet = createSprite(random(0,width), random(0,height))
+  // // bullet = createSprite(700, 500)
+  // bullet.addImage(bulletImg)
 
-  bullet.setCollider('circle', 0, 0, 5)
-  var direction = random(0,360)
-  // var direction = 90
-  bullet.setSpeed(random(5,10), direction)
-  // bullet.rotation = direction+90
-  bullet.rotateToDirection = true
-  // bullet.rotation +=90
-  bullet.life = 500;
+  // bullet.setCollider('circle', 0, 0, 5)
+  // var direction = random(0,360)
+  // // var direction = 90
+  // bullet.setSpeed(random(5,10), direction)
+  // // bullet.rotation = direction+90
+  // bullet.rotateToDirection = true
+  // // bullet.rotation +=90
+  // bullet.life = 500;
 
-  bullets.add(bullet)
+  // bullets.add(bullet)
+  generatePattern('threeSpread',8,5,5,500,500)
+}
+
+function generatePattern(name,n,speed,life,x,y) {
+  var patternName = new Group()
+
+  if (name == 'spiral') {
+    var spacer = 360/n
+    var direction = 0
+    for (var i = 0; i < n; ++i) {
+      bullet = createSprite(x,y)
+      bullet.addImage(bulletImg)
+      bullet.setCollider('circle', 0, 0, 5)
+      bullet.setSpeed(speed, direction)
+      bullet.rotateToDirection = true
+      bullet.life = life*100;
+      patternName.add(bullet)
+      direction += spacer
+    }
+  } else if (name == 'threeSpread') {
+    var spacer = 30
+    var direction = 60
+    if (n % 3 == 1) {
+      n+=2
+    } else if (n % 3 == 2) {
+      n+=1
+    }
+    for (var i = 0; i < n; ++i) {
+      bullet = createSprite(x,y)
+      bullet.addImage(bulletImg)
+      bullet.setCollider('circle', 0, 0, 5)
+      bullet.setSpeed(speed, direction)
+      bullet.rotateToDirection = true
+      bullet.life = life*100;
+      patternName.add(bullet)
+      direction += spacer
+      if (direction > 120) {
+        direction = 60;
+      }
+      if (i % 3 == 2) {
+        speed += 1
+      }
+    }
+  }
+
+  bulletPatterns[name] = patternName
 }
