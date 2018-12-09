@@ -22,7 +22,7 @@ function preload() {
   'assets/bbackground (3).png','assets/bbackground (4).png',
   'assets/bbackground (5).png','assets/bbackground (6).png',
   'assets/bbackground (7).png','assets/bbackground (8).png')
-  sequenceBackground.frameDelay = 30
+  // sequenceBackground.frameDelay = 30
 
   spaceshipImg = loadImage('/assets/spacepixels-0.1.0/pixel_ship_blue.png')
   bulletImg = loadImage('/assets/spacepixels-0.1.0/pixel_laser_small_red.png')
@@ -73,6 +73,17 @@ function draw() {
   
   bullets.bounce(bullets,bounceCallback)
   bullets.collide(spaceship,death)
+  bullets.forEach(bullet => {
+    if (bullet.position.y > height || bullet.position.y < 0) {
+      bullet.velocity.y *= -1
+      // bullet.mirrorY(-bullet.mirrorY())
+    }
+    if (bullet.position.x > width || bullet.position.x < 0) {
+      bullet.velocity.x *= -1
+      // bullet.mirrorX(-bullet.mirrorX())
+    }
+  })
+
 
   for (i in bulletPatterns) {
     bulletPatterns[i].bounce(bullets,bounceCallback)
@@ -80,6 +91,12 @@ function draw() {
     if (i == 'spiral') {
       bulletPatterns[i].forEach(bullet => {
         bullet.setSpeed(5, bullet.rotation+1)
+        if (bullet.position.y >= height || bullet.position.y <= 0) {
+          bullet.remove()
+        }
+        if (bullet.position.x >= width || bullet.position.x <= 0) {
+          bullet.remove()
+        }
       });
     }
   }
@@ -89,16 +106,6 @@ function draw() {
   spaceship.velocity.x = (mappedX - spaceship.position.x)
   spaceship.velocity.y = (mappedY - spaceship.position.y)
 
-  allSprites.forEach(sprite => {
-    if (sprite.position.y > height || sprite.position.y < 0) {
-      sprite.velocity.y *= -1
-      // sprite.mirrorY(-sprite.mirrorY())
-    }
-    if (sprite.position.x > width || sprite.position.x < 0) {
-      sprite.velocity.x *= -1
-      // sprite.mirrorX(-sprite.mirrorX())
-    }
-  })
   if (spaceship.velocity.x != 0 && spaceship.velocity.y != 0) {
     var x = spaceship.velocity.x
     var y = spaceship.velocity.y
