@@ -135,11 +135,6 @@ function advanceLevel() {
     singleBullet.remove()
     fired = false
   }
-  asteroids.removeSprites()
-  bullets.removeSprites()
-  for (i in bulletPatterns) {
-    bulletPatterns[i].removeSprites()
-  }
 
   startButton.remove()
   spawn('asteroid',hitboxes)
@@ -315,6 +310,11 @@ function draw() {
     })
 
     if (minions.length == 0 && bosses.length == 0) {
+      asteroids.removeSprites()
+      bullets.removeSprites()
+      for (i in bulletPatterns) {
+        bulletPatterns[i].removeSprites()
+      }
       drawButton('next')
     }
   }
