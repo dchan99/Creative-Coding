@@ -1,3 +1,8 @@
+//Image assets credits: https://hexadecimalwtf.itch.io/space-pixels
+//Made modification to size of image as well as combining images to create animations
+
+//Sound assets credits: https://freesound.org/
+
 var timeStart
 var sequenceBackground
 var sequenceSpaceship
@@ -135,7 +140,7 @@ function advanceLevel() {
   for (i in bulletPatterns) {
     bulletPatterns[i].removeSprites()
   }
-  
+
   startButton.remove()
   spawn('asteroid',hitboxes)
   spawn('minion',hitboxes)
