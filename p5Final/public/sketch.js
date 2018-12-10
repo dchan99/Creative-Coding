@@ -42,12 +42,12 @@ function preload() {
   sequenceSpaceship = loadAnimation('assets/animatedSpaceship/spaceship.png','assets/animatedSpaceship/spaceship (1).png','assets/animatedSpaceship/spaceship (2).png',
     'assets/animatedSpaceship/spaceship (3).png','assets/animatedSpaceship/spaceship (4).png','assets/animatedSpaceship/spaceship (5).png')
 
-  bulletImg = loadImage('/assets/bullet/pixel_laser_small_red.png')
-  singleBulletImg = loadImage('/assets/bullet/pixel_laser_small_blue.png')
+  bulletImg = loadImage('assets/bullet/pixel_laser_small_red.png')
+  singleBulletImg = loadImage('assets/bullet/pixel_laser_small_blue.png')
 
-  asteroidImg = loadImage('/assets/enemy/asteroid_grey.png')
-  minionImg = loadImage('/assets/enemy/pixel_ship_red_small_2.png')
-  bossImg = loadImage('/assets/enemy/pixel_station_red.png')
+  asteroidImg = loadImage('assets/enemy/asteroid_grey.png')
+  minionImg = loadImage('assets/enemy/pixel_ship_red_small_2.png')
+  bossImg = loadImage('assets/enemy/pixel_station_red.png')
 
   ricochet = loadSound("assets/ricochet.wav")
   explosion = loadSound("assets/explosion.wav")
@@ -431,21 +431,6 @@ function spawn(name,helpers) {
   }
 }
 
-function mousePressed() {
-  if (!fired && !gameOver) {
-    singleBullet = createSprite(spaceship.position.x, spaceship.position.y)
-    singleBullet.addImage(singleBulletImg)
-
-    singleBullet.setCollider('circle', 0, 0, 5)
-    singleBullet.rotateToDirection = true
-
-    singleBullet.setSpeed(5, spaceship.rotation)
-
-    fired = true
-    deadly = true
-  }
-}
-
 function generateBullet(x,y) {
   bullet = createSprite(x, y)
   bullet.addImage(bulletImg)
@@ -515,19 +500,34 @@ function generatePattern(name,x,y) {
 var forward = false
 var backward = false
 function keyPressed() {
-  if (key == 'w' || keyCode == UP_ARROW) {
+  if (key == 'w' || keyCode == UP_ARROW || key == 'z') {
     forward = true;
   }
-  if (key == 's' || keyCode == DOWN_ARROW) {
+  if (key == 's' || keyCode == DOWN_ARROW || key == 'x') {
     backward = true;
+  }
+
+  if (keyCode == 32) {
+    if (!fired && !gameOver) {
+      singleBullet = createSprite(spaceship.position.x, spaceship.position.y)
+      singleBullet.addImage(singleBulletImg)
+
+      singleBullet.setCollider('circle', 0, 0, 5)
+      singleBullet.rotateToDirection = true
+
+      singleBullet.setSpeed(5, spaceship.rotation)
+
+      fired = true
+      deadly = true
+    }
   }
 }
 
 function keyReleased() {
-  if (key == 'w' || keyCode == UP_ARROW) {
+  if (key == 'w' || keyCode == UP_ARROW || key == 'z') {
     forward = false;
   }
-  if (key == 's' || keyCode == DOWN_ARROW) {
+  if (key == 's' || keyCode == DOWN_ARROW || key == 'x') {
     backward = false;
   }
 }
